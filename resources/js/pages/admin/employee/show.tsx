@@ -1,6 +1,16 @@
 'use client';
 
 import { DataTable } from '@/components/data-table';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,7 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, EmployeeWithRelations } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { history_top_up_columns } from './column/history_top_up_columns';
 import { history_transaction_columns } from './column/history_transaction_columns';
 
@@ -159,11 +169,28 @@ export default function Show({ employee }: Props) {
                 <Button type="button" variant="outline" onClick={() => window.history.back()}>
                     Kembali
                 </Button>
-                <Link href={route('admin.employees.index')}>
-                    <Button type="button" className="w-full">
-                        Cetak Member Card
-                    </Button>
-                </Link>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button type="button">
+                            Cetak Member Card
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Batal</AlertDialogCancel>
+                            <AlertDialogAction
+                                onClick={() => {
+                                    window.open(route('admin.member-cards.print', employee.member_card?.id), '_blank');
+                                }}
+                            >
+                                Ya, Cetak
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
         </AppLayout>
     );
