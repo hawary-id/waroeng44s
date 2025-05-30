@@ -6,6 +6,7 @@ use App\Models\TopUp;
 use App\Models\Transaction;
 use App\Observers\TopUpObserver;
 use App\Observers\TransactionObserver;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,5 +26,8 @@ class AppServiceProvider extends ServiceProvider
     {
         TopUp::observe(TopUpObserver::class);
         Transaction::observe(TransactionObserver::class);
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 }
