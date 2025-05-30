@@ -47,8 +47,11 @@ class EmployeeService
             'memberCard.topUps' => function ($query) {
                 $query->orderBy('id', 'desc');
             },
+            'memberCard.transactions' => function ($query) {
+                $query->orderBy('id', 'desc');
+            },
             'memberCard.topUps.topUpBy',
-            'memberCard.transactions',
+            'memberCard.transactions.performedBy',
             'store',
             'division'
         ])->find($id);

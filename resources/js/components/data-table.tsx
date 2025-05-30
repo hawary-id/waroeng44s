@@ -32,28 +32,6 @@ export function DataTable<TData, TValue>({ columns, data, showHeaderTable = true
     const [rowSelection, setRowSelection] = useState({});
     const [globalFilter, setGlobalFilter] = useState('');
 
-    const newColumns = columns.map((col) => ({
-        ...col,
-        footer: (ctx: any) => {
-            const colId = ctx.column.id;
-            if (!colId || data.length === 0) return null;
-
-            const firstRow = data[0] as Record<string, any>;
-            const isNumericColumn = typeof firstRow[colId] === 'number';
-
-            if (isNumericColumn) {
-                const total = data.reduce((sum, row) => {
-                    const value = (row as Record<string, any>)[colId];
-                    return sum + (typeof value === 'number' ? value : 0);
-                }, 0);
-
-                return total.toLocaleString();
-            }
-
-            return null;
-        },
-    }));
-
     const table = useReactTable({
         data,
         columns,
@@ -75,6 +53,8 @@ export function DataTable<TData, TValue>({ columns, data, showHeaderTable = true
             globalFilter,
         },
     });
+
+    const hasFooter = table.getFooterGroups().some((group) => group.headers.some((header) => header.column.columnDef.footer !== undefined));
 
     return (
         <div className="">
@@ -122,17 +102,19 @@ export function DataTable<TData, TValue>({ columns, data, showHeaderTable = true
                             </TableRow>
                         )}
                     </TableBody>
-                    <tfoot>
-                        {table.getFooterGroups().map((footerGroup) => (
-                            <TableRow key={footerGroup.id}>
-                                {footerGroup.headers.map((header) => (
-                                    <TableCell key={header.id} className={header.column.id === 'amount' ? 'text-right font-bold' : ''}>
-                                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </tfoot>
+                    {hasFooter && (
+                        <tfoot>
+                            {table.getFooterGroups().map((footerGroup) => (
+                                <TableRow key={footerGroup.id}>
+                                    {footerGroup.headers.map((header) => (
+                                        <TableCell key={header.id} className={header.column.id === 'amount' ? 'text-right font-bold' : ''}>
+                                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))}
+                        </tfoot>
+                    )}
                 </Table>
             </div>
             <DataTablePagination table={table} />

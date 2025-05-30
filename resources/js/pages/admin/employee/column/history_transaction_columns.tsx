@@ -5,10 +5,10 @@ import CurrencyFormatter from '@/components/data-table-currency-formatter';
 import { Badge } from '@/components/ui/badge';
 import { transactionStatus } from '@/constants/transaction_status';
 import { formatedDate } from '@/lib/utils';
-import { TopUpWithRelations } from '@/types';
+import { TransactionWithRelations } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const history_top_up_columns: ColumnDef<TopUpWithRelations>[] = [
+export const history_transaction_columns: ColumnDef<TransactionWithRelations>[] = [
     {
         accessorKey: 'code',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Kode Transaksi" />,
@@ -23,8 +23,8 @@ export const history_top_up_columns: ColumnDef<TopUpWithRelations>[] = [
         },
     },
     {
-        accessorKey: 'top_up_by.name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Top Up By" />,
+        accessorKey: 'performed_by.name',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Transaction By" />,
     },
     {
         accessorKey: 'amount',
@@ -34,26 +34,26 @@ export const history_top_up_columns: ColumnDef<TopUpWithRelations>[] = [
             return <CurrencyFormatter amount={amount} />;
         },
         footer: (props) => {
-                    const data = props.table.options.data as TopUpWithRelations[];
+            const data = props.table.options.data as TransactionWithRelations[];
 
-                    const total = data.reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
-                    const totalCanceled = data.filter((row) => row.status === 'canceled').reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+            const total = data.reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+            const totalCanceled = data.filter((row) => row.status === 'canceled').reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
 
-                    const finalTotal = total - totalCanceled;
+            const finalTotal = total - totalCanceled;
 
-                    const formatCurrency = (value: number) => value.toLocaleString('id-ID', { currency: 'IDR' });
+            const formatCurrency = (value: number) => value.toLocaleString('id-ID', { currency: 'IDR' });
 
-                    if (finalTotal === 0) return null;
+            if (finalTotal === 0) return null;
 
-                    return (
-                        <div>
-                            {`${formatCurrency(total)} - ${formatCurrency(totalCanceled)} = `}
-                            <strong>{formatCurrency(finalTotal)}</strong>
-                        </div>
-                    );
-                },
+            return (
+                <div>
+                    {`${formatCurrency(total)} - ${formatCurrency(totalCanceled)} = `}
+                    <strong>{formatCurrency(finalTotal)}</strong>
+                </div>
+            );
+        },
     },
-     {
+    {
         accessorKey: 'status',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
         cell: ({ row }) => {

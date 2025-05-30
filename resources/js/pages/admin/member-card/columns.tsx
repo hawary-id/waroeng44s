@@ -2,7 +2,15 @@
 
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import CurrencyFormatter from '@/components/data-table-currency-formatter';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -76,6 +84,13 @@ export const columns: ColumnDef<MemberCardWithRelations>[] = [
         cell: ({ row }) => {
             const balance = parseFloat(row.getValue('balance'));
             return <CurrencyFormatter amount={balance} />;
+        },
+         footer: (props) => {
+            const data = props.table.options.data as MemberCardWithRelations[];
+
+            const total = data.reduce((sum, row) => sum + Number(row.balance ?? 0), 0);
+
+            return <CurrencyFormatter amount={total} />;
         },
     },
 

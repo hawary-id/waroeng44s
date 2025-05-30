@@ -88,12 +88,13 @@ export const columns = (showActions: boolean = true): ColumnDef<TransactionWithR
                 const data = props.table.options.data as TransactionWithRelations[];
 
                 const total = data.reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
-
                 const totalCanceled = data.filter((row) => row.status === 'canceled').reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
 
                 const finalTotal = total - totalCanceled;
 
                 const formatCurrency = (value: number) => value.toLocaleString('id-ID', { currency: 'IDR' });
+
+                if (finalTotal === 0) return null;
 
                 return (
                     <div>

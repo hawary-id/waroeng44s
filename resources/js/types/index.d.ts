@@ -93,8 +93,8 @@ export interface MemberCard {
 
 export interface MemberCardWithRelations extends MemberCard {
     user?: EmployeeWithRelations;
-    top_ups?: TopUp[];
-    transactions?: Transaction[];
+    top_ups?: TopUpWithRelations[];
+    transactions?: TransactionWithRelations[];
 }
 
 export interface TopUp {

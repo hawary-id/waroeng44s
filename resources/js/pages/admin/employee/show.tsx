@@ -11,6 +11,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, EmployeeWithRelations } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { history_top_up_columns } from './column/history_top_up_columns';
+import { history_transaction_columns } from './column/history_transaction_columns';
 
 interface Props {
     employee: EmployeeWithRelations;
@@ -144,7 +145,9 @@ export default function Show({ employee }: Props) {
                     </Card>
                 </TabsContent>
                 <TabsContent value="transaction">
-                    <Card className="p-5">Transaction</Card>
+                    <Card className="p-5">
+                        <DataTable columns={history_transaction_columns} data={employee.member_card?.transactions ?? []} />
+                    </Card>
                 </TabsContent>
                 <TabsContent value="topUp">
                     <Card className="p-5">
