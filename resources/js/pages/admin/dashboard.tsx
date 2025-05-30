@@ -5,7 +5,7 @@ import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTool
 import AppLayout from '@/layouts/app-layout';
 import { ChartMonthly, dailyTransaction, TransactionWithRelations, type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { DollarSign, ShoppingCart, Store, Users } from 'lucide-react';
+import { Combine, DollarSign, ShoppingCart, Store, Users } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
 import { columns } from './transaction/columns';
 
@@ -93,7 +93,7 @@ export default function Dashboard({ totalTransaction, totalTopUp, totalEmployee,
                     <div className="group relative w-full rounded-lg border p-3 shadow-sm md:p-4">
                         <p className="text-muted-foreground mb-2 text-sm">Total Divisi</p>
                         <span className="text-lg font-bold text-sky-600 md:text-2xl">{formatedNumber(totalDivision)}</span>
-                        <Store
+                        <Combine
                             size={40}
                             className="absolute top-3 right-3 text-sky-600/40 transition-all duration-300 ease-in-out group-hover:scale-110 md:top-4 md:right-4"
                         />
